@@ -1,66 +1,75 @@
-#include <iostream>
+ 
+#include <bits/stdc++.h>
 using namespace std;
-int queue[100], n= 100, front = -1, rear = -1;
-void Insert(){
-    int val;
-    if(rear == n-1){
-        cout<<"Queue Overflow"<<endl;
+ 
+struct QNode {
+    int data;
+    QNode* next;
+    QNode(int d)
+    {
+        data = d;
+        next = NULL;
     }
-    else{
-        if(front == -1){
-            front = 0;
-            cout<<"Insert the element in the queue"<<endl;
-            cin>>val;
-            rear++;
-            queue[rear] = val;
+};
+ 
+struct Queue {
+    QNode *front, *rear;
+    Queue() { front = rear = NULL; }
+ 
+    void enQueue(int x)
+    {
+ 
+        // Create a new LL node
+        QNode* temp = new QNode(x);
+ 
+        // If queue is empty, then
+        // new node is front and rear both
+        if (rear == NULL) {
+            front = rear = temp;
+            return;
         }
+ 
+        // Add the new node at
+        // the end of queue and change rear
+        rear->next = temp;
+        rear = temp;
     }
-}
-void Delete(){
-    if(front == -1 || front > rear){
-        cout<<"Queue Underflow"<<endl;
-        return;
+ 
+    // Function to remove
+    // a key from given queue q
+    void deQueue()
+    {
+        // If queue is empty, return NULL.
+        if (front == NULL)
+            return;
+ 
+        // Store previous front and
+        // move front one node ahead
+        QNode* temp = front;
+        front = front->next;
+ 
+        // If front becomes NULL, then
+        // change rear also as NULL
+        if (front == NULL)
+            rear = NULL;
+ 
+        delete (temp);
     }
-    else{
-        cout<<"Deleted Element is:" <<queue[front] <<endl;
-        front++;
-    }
-}
-void Display(){
-    if(front == -1){
-        cout<<"Queue is empty"<<endl;
-    }
-    else{
-        cout<<"Queue elements are: "<<endl;
-        for(int i = front; i <= rear; i++){
-            cout<<queue[i]<<" ";
-            cout<<endl;
-        }
-    }
-}
-
-//driver code
-
-int main(){
-    int ch;
-       cout<<"1) Insert element to queue"<<endl;
-   cout<<"2) Delete element from queue"<<endl;
-   cout<<"3) Display all the elements of queue"<<endl;
-   cout<<"4) Exit"<<endl;
-   do {
-      cout<<"Enter your choice : "<<endl;
-      cin>>ch;
-      switch (ch) {
-         case 1: Insert();
-         break;
-         case 2: Delete();
-         break;
-         case 3: Display();
-         break;
-         case 4: cout<<"Exit"<<endl;
-         break;
-         default: cout<<"Invalid choice"<<endl;
-      }
-   } while(ch!=4);
-   return 0;
+};
+ 
+// Driver code
+int main()
+{
+ 
+    Queue q;
+    q.enQueue(10);
+    q.enQueue(20);
+    q.deQueue();
+    q.deQueue();
+    q.enQueue(30);
+    q.enQueue(40);
+    q.enQueue(50);
+    q.deQueue();
+    cout << "Queue Front : " << ((q.front != NULL) ? (q.front)->data : -1)<< endl;
+    cout << "Queue Rear : " << ((q.rear != NULL) ? (q.rear)->data : -1);
 }
